@@ -185,9 +185,9 @@ def main():
         transform_train_latentz = transforms.Compose(latentz_transforms + dens_est_chain) # Levi do we need dens_est_chain?
         transform_test_latentz = transforms.Compose(latentz_transforms + dens_est_chain)
         trainset = latentz.LATENT_Z(
-            root='./data/train_c.pt', train=True, transform=transform_train_latentz)
+            root='./data/glo/train_c.pt', train=True, transform=transform_train_latentz)
         testset = latentz.LATENT_Z(
-            root='./data/train_c.pt', train=False, transform=transform_test_latentz)
+            root='./data/glo/train_c.pt', train=False, transform=transform_test_latentz)
         args.nClasses = 10
         in_shape = (3, 32, 32)
     if args.dataset == 'tiny_imagenet':
@@ -195,8 +195,8 @@ def main():
         tiny_imagenet_transforms = [transforms.Pad(0, 0), transforms.ToTensor(), lambda x: x.repeat((3, 1, 1))]
         transform_train_tiny_imagenet = transforms.Compose(tiny_imagenet_transforms + dens_est_chain)
         transform_test_tiny_imagenet = transforms.Compose(tiny_imagenet_transforms + dens_est_chain)
-        trainset = tiny_imagenet_c.tiny_imagenet('./data/train_c.pt', train=True, transform=transform_train_tiny_imagenet)
-        testset = tiny_imagenet_c.tiny_imagenet('./data/train_c.pt', train=False, transform=transform_train_tiny_imagenet)
+        trainset = tiny_imagenet_c.tiny_imagenet('./data/vqvae/train_c.pt', train=True, transform=transform_train_tiny_imagenet)
+        testset = tiny_imagenet_c.tiny_imagenet('./data/vqvae/train_c.pt', train=False, transform=transform_train_tiny_imagenet)
         args.nClasses = 10
         in_shape = (3, 32, 32)
     else:
