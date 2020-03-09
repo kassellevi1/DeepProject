@@ -1,19 +1,23 @@
-# GLANN
-Official code for paper "[Non-Adversarial Image Synthesis with Generative Latent Nearest Neighbors](http://openaccess.thecvf.com/content_CVPR_2019/papers/Hoshen_Non-Adversarial_Image_Synthesis_With_Generative_Latent_Nearest_Neighbors_CVPR_2019_paper.pdf)" by Yedid Hoshen, Ke Li and Jitendra Malik, CVPR'19
+# title - levi
+Description - levi
 
-This repository contains Python3 implementations of:
-- Generative Latent Optimization (GLO)
-- Implicit Maximum Likelihood Estimation (IMLE)
-- Generative Latent Nearest Neighbors (GLANN)
+## Requisite
 
-# Quick Start
+levi - tanfiz
+* Python >= 3.6
+* PyTorch >= 1.1
+* lmdb (for storing extracted codes)
 
-Install dependencies:
-```bash
-pip install numpy scipy pytorch torchvision python-mnist fbpca faiss
-```
+## Usage
 
-Edit prepare_mnist.py with the correct path to the data.
+Currently supports 256px (top/bottom hierarchical prior) - levi
+
+1. Stage 1 extract code from dataset GLO/vqvae2
+
+1.1 option 1 train code with GLO
+
+Edit prepare_mnist.py/ prepare_cifar_data.py with the correct path to the data.
+
 
 Prepare a dataset:
 ```bash
@@ -23,34 +27,35 @@ python prepare_mnist.py
 Train GLO on a particular config:
 ```bash
 python train_glo.py configs/mnist.yaml
-```
 
-Train IMLE based on the trained GLO model:
-```bash
-python train_icp.py configs/mnist.yaml
-```
+1.2 option 2 train code with vqvae2
 
-Evaluate the FID of the trained GLANN model:
-```bash
-python test_fid.py configs/mnist.yaml
-```
+> python train_vqvae.py [DATASET PATH]
 
-## References
-Please cite [[1]](http://openaccess.thecvf.com/content_CVPR_2019/papers/Hoshen_Non-Adversarial_Image_Synthesis_With_Generative_Latent_Nearest_Neighbors_CVPR_2019_paper.pdf) if you found the resources in this repository useful.
+Extract codes for stage 1.2 training
 
-### Non-Adversarial Image Synthesis with Generative Latent Nearest Neighbors
+> python extract_code.py --ckpt checkpoint/[VQ-VAE CHECKPOINT] --name [LMDB NAME] [DATASET PATH]
 
-[1] Y. Hoshen, K. Li, J. Malik, [*Non-Adversarial Image Synthesis with Generative Latent Nearest Neighbors*](http://openaccess.thecvf.com/content_CVPR_2019/papers/Hoshen_Non-Adversarial_Image_Synthesis_With_Generative_Latent_Nearest_Neighbors_CVPR_2019_paper.pdf)
-```
-@inproceedings{hoshen2019non,
-  title={Non-Adversarial Image Synthesis with Generative Latent Nearest Neighbors},
-  author={Hoshen, Yedid and Li, Ke and Malik, Jitendra},
-  booktitle={Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition},
-  pages={5811--5819},
-  year={2019}
-}
-```
 
-### Related work
-* [P. Bojanowski, A. Joulin, D. Lopez-Paz, A. Szlam - Optimizing the Latent Space of Generative Networks, 2017](https://arxiv.org/abs/1707.05776)
-* [K. Li, J. Malik - Implicit Maximum Likelihood Estimation, 2018](https://arxiv.org/abs/1809.09087)
+2. Stage 2 density estimation based on IRESENT technique
+
+prepare code for iresent density estimation
+
+> python prepare_code --path runs/[DIRECTORY]  --name [NAME]
+
+Train i-ResNet density model on codes (Batch size and learning rate optimized for 4GPUs):
+
+if you have only one GPU divide batch size by 4
+
+note - edit script to choose the desire code
+
+```bash scripts/dens_est_code.sh
+
+levi - if you want to add an image
+## Sample
+
+### Stage 1
+
+Note: This is a training sample
+
+![Sample from Stage 1 (VQ-VAE)](stage1_sample.png)
