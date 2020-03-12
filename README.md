@@ -1,7 +1,9 @@
 # GLANN using advanced distribution models
 Description -
 Official code for project of ADL course by Yedid Hoshen, implemented by Levi Kassel.
+
 This project try to improved the GLANN method with advanced distribution model (I-RESNET/VQVAE)
+
 This repository contains Python3 implementations of:
 
 Generative Latent Nearest Neighbors (GLANN)
@@ -93,7 +95,8 @@ First train the pixelSnail model for the bottom code
 ```bash
 python train_pixelsnail.py --hier bottom [LMDB NAME]
 ```
+Now, for sampling generated images use this command For the option 2:
 
 ```bash
-python sample.py --option vqvae --vqvae [PATH TO VQVAE MODEL] --top [PATH TO I-ResNet MODEL] --bottom [PATH TO PixelSnail BOTTOM MODEL] [NAME_OF_FILE]
+python sample.py --option vqvae --vqvae [PATH TO VQVAE MODEL]  --bottom [PATH TO PixelSnail BOTTOM MODEL] [NAME_OF_FILE]
 ```
