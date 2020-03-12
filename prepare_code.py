@@ -9,14 +9,14 @@ import lmdb
 from torchvision.datasets import VisionDataset
 import argparse
 
-
+TRAIN_CODE_FOR_IRESNET = 'codes_train.pt'
+TEST_CODE_FOR_IRESNET = 'codes_test.pt'
 
 CodeRow = namedtuple('CodeRow', ['top', 'bottom', 'filename'])
 
-parser = argparse.ArgumentParser(description='Train i-ResNet/ResNet on Cifar')
+parser = argparse.ArgumentParser(description='Train i-ResNet/ResNet')
 parser.add_argument('--option', default='glo', type=str, help='option')
-parser.add_argument('--dataset', default='mnist', type=str, help='dataset')
-parser.add_argument('--code_dir', default=None, type=str, help='directory to extract the code')
+parser.add_argument('--path', default=None, type=str, help='directory to extract the code')
 
 class LMDBDataset(VisionDataset) :
   def __init__(self, path, train=True, transform=None, target_transform=None):
@@ -72,31 +72,30 @@ class LMDBDataset(VisionDataset) :
       data_top = self.transform(data_top)  
     return data_top, target
 	
-def save_glo(path,dataset) :
-  net = torch.load(os.path.join(path, dataset))
-  net_reshape = netz['emb.weight'].reshape(60000,8,8)
+def save_glo(path) :
+  netz = torch.load(os.path.join(path, 'netZ_nag.pth'))
+  net_reshape = netz['emb.weight'].reshape(-1,8,8)
   train = net_reshape[0:54000,:,:]
   target_train = torch.ones(54000, dtype=torch.int32)
   test = net_reshape[54000:60000,:,:]
   target_test = torch.ones(6000, dtype=torch.int32)
 
   net_train = (train, target_train)
-  model_save_name = 'train_c.pt'
-  path = F"/content/gdrive/My Drive/test_colab/DeepProject/data/vqvae/{model_save_name}"
-  torch.save(net_train, path)
+  path_train = os.path.join('runs','iresnet', TRAIN_CODE_FOR_IRESNET)
+  torch.save(net_train, path_train)
 
   net_test = (test, target_test)
-  model_save_name = 'test_c.pt'
-  path = F"/content/gdrive/My Drive/test_colab/DeepProject/data/vqvae/{model_save_name}"
-  torch.save(net_test, path)
+
+  path_test = os.path.join('runs','iresnet', TEST_CODE_FOR_IRESNET)
+  torch.save(net_test, path_test)
 def main():
   args = parser.parse_args()
 
-  if args.option == 'glo' :
-    save_glo(args.code_dir, args.dataset)
+  if args.option == 'glo':
+    save_glo(args.path)
 
-  if args.option == 'vqvae' :
-    path = os.path.join('/content/gdrive/My Drive/test_colab/DeepProject',args.code_dir)
+  if args.option == 'vqvae':
+    path = os.path.join('runs','iresnet_code', TRAIN_CODE_FOR_IRESNET)
     lmbd_set = LMDBDataset(path)
     lmbd_set.save_vq()
 
