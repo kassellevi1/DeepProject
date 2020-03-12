@@ -40,18 +40,6 @@ def load_model(model, checkpoint, device):
     if model == 'vqvae':
         model = VQVAE()
 
-    elif model == 'pixelsnail_top':
-        model = PixelSNAIL(
-            [32, 32],
-            512,
-            args.channel,
-            5,
-            4,
-            args.n_res_block,
-            args.n_res_channel,
-            dropout=args.dropout,
-            n_out_res_block=args.n_out_res_block,
-        )
 
     elif model == 'pixelsnail_bottom':
         model = PixelSNAIL(
@@ -90,7 +78,6 @@ if __name__ == '__main__':
     parser.add_argument('--batch', type=int, default=8)
     parser.add_argument('--option', type=str)
     parser.add_argument('--vqvae', type=str)
-    parser.add_argument('--top', type=str)
     parser.add_argument('--bottom', type=str)
     parser.add_argument('--temp', type=float, default=1.0)
     parser.add_argument('filename', type=str)

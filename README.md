@@ -1,16 +1,26 @@
-# title - levi
-Description - levi
+# GLANN using advanced distribution models
+Description -
+Official code for project of ADL course by Yedid Hoshen, implemented by Levi Kassel.
+This project try to improved the GLANN method with advanced distribution model (I-RESNET/VQVAE)
+This repository contains Python3 implementations of:
+
+Generative Latent Nearest Neighbors (GLANN)
+Invertible Resnet (I-ResNet)
+Vector Quantized Variational AutoEncoder 2 (VQ-VAE2)
+
 
 ## Requisite
 
-levi - tanfiz
 * Python >= 3.6
 * PyTorch >= 1.1
 * lmdb (for storing extracted codes)
 
 Install dependencies:
 
-Dependencies can be installed via pip install -r requirements.txt
+Dependencies can be installed via:
+```bash
+pip install -r requirements.txt
+```
 
 Note: You need to run visdom server and set vis_server location as well as port.
 
@@ -60,7 +70,7 @@ python prepare_code --option [glo/vqvae]  --path runs/[DIRECTORY]
 Train i-ResNet density model on codes (Batch size and learning rate optimized for 4GPUs, if you have only one GPU divide batch size by 4):
 
 
-Note: You need to run visdom server and set vis_server location as well as port. also specipy in dataset argument glo/vqvae
+Note: You need to run visdom server and set vis_server location as well as port. also Specify in dataset argument ‫-‬ glo/vqvae
 
 
 ```bash
